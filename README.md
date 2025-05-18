@@ -59,7 +59,7 @@ temp:25.3,hum:68.0
 | DIO0     | 26         |
 ```
 
-## 🌐 LoRaReceiver + Firebase
+## 🌐 loRaReceiver + Firebase
 ### Fungsi
 - Koneksi ke WiFi
 - Autentikasi dengan Firebase menggunakan API Key
@@ -74,7 +74,7 @@ temp:25.3,hum:68.0
 ```
 
 ## 🔐 File secrets.h
-Buat file secrets.h di LoRaReceiver/ berdasarkan contoh ini:
+Buat file secrets.h di loRaReceiver/ berdasarkan contoh ini:
 
 ```
 #ifndef SECRETS_H
@@ -95,8 +95,8 @@ Install library berikut di Arduino IDE:
 - DHT sensor library
 
 ## 📋 Cara Kerja Sistem
-1. LoRaTransmitter membaca data dari sensor dan mengirimkan string melalui LoRa.
-2. LoRaReceiver menerima string, parsing suhu & kelembapan.
+1. loRaTransmitter membaca data dari sensor dan mengirimkan string melalui LoRa.
+2. loRaReceiver menerima string, parsing suhu & kelembapan.
 3. Data dikirim ke Firebase dalam bentuk JSON.
 4. Firebase bisa diakses untuk monitoring real-time melalui dashboard atau aplikasi.
 
