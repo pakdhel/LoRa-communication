@@ -29,7 +29,8 @@ Proyek ini menggunakan ESP32 LILYGO TTGO T-Higrow LoRa Shield untuk menerima dat
 #define API_KEY "your_firebase_api_key"
 #define DATABASE_URL "your_firebase_database_url"
 
-#endif```
+#endif
+```
 
 ⚠️ Jangan upload secrets.h ke GitHub — file ini sudah masuk .gitignore.
 
