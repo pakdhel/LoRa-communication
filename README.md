@@ -58,13 +58,14 @@ DIO0  →     GPIO26
 Pastikan transmitter mengirim string dengan format seperti:
 
 temp:25.5,hum:70.2
+
 Receiver akan parsing dan menyimpan ke Firebase sebagai:
 
-{
+```{
   "temperature": 25.5,
   "humidity": 70.2
 }
-
+```
 ## ☁️ Konfigurasi Firebase
 Aktifkan Realtime Database di Firebase Console
 
