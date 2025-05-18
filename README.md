@@ -2,14 +2,14 @@
 Proyek ini menggunakan ESP32 LILYGO TTGO T-Higrow LoRa Shield untuk menerima data dari jaringan LoRa dan mengirimkan hasilnya ke Firebase Realtime Database. Data yang dikirim berupa suhu dan kelembapan.
 
 ## 📂 Struktur Folder
-LoRa/
+```LoRa/
 ├── LoRaReceiver/
 │   ├── loraReceiver.ino
 ├── LoRaTransmitter/
 │   └── loraTransmitter.ino
 │   .gitignore              ← Untuk mengabaikan loRaReceiver/secrets.h
 │   secrets.example.h       ← Contoh file credentials
-
+```
 ## 🛠️ Fitur
 - Menerima data via LoRa (modul LoRa internal TTGO T-Higrow)
 - Koneksi WiFi
@@ -19,9 +19,9 @@ LoRa/
 ## 🔧 Persiapan
 1. Clone repository
 2. Buat file secrets.h
-Buat file LoRaReceiver/secrets.h berdasarkan secrets.example.h:
+3. Buat file LoRaReceiver/secrets.h berdasarkan secrets.example.h:
 
-#ifndef SECRETS_H
+```#ifndef SECRETS_H
 #define SECRETS_H
 
 #define WIFI_SSID "your_wifi_ssid"
@@ -29,7 +29,8 @@ Buat file LoRaReceiver/secrets.h berdasarkan secrets.example.h:
 #define API_KEY "your_firebase_api_key"
 #define DATABASE_URL "your_firebase_database_url"
 
-#endif
+#endif```
+
 ⚠️ Jangan upload secrets.h ke GitHub — file ini sudah masuk .gitignore.
 
 ## 📦 Library yang Dibutuhkan
