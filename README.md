@@ -55,13 +55,12 @@ DIO0  →     GPIO26
 📝 Pin ini sudah dikonfigurasi di sketch loraReceiver.ino.
 
 ## 📡 Format Data LoRa
-Pastikan transmitter mengirim string dengan format seperti:
-
-temp:25.5,hum:70.2
+Pastikan transmitter mengirim string dengan format seperti: temp:25.5,hum:70.2
 
 Receiver akan parsing dan menyimpan ke Firebase sebagai:
 
-```{
+```
+{
   "temperature": 25.5,
   "humidity": 70.2
 }
@@ -71,11 +70,12 @@ Aktifkan Realtime Database di Firebase Console
 
 Atur rules sementara untuk pengujian:
 
+```
 {
   "rules": {
     ".read": true,
     ".write": true
   }
 }
-
+```
 ⚠️ Jangan gunakan aturan ini untuk produksi.
