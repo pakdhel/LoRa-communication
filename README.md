@@ -1,75 +1,109 @@
-# 🌱 ESP32 LoRa Receiver + Firebase RTDB (TTGO T-Higrow)
-Proyek ini menggunakan ESP32 LILYGO TTGO T-Higrow LoRa Shield untuk menerima data dari jaringan LoRa dan mengirimkan hasilnya ke Firebase Realtime Database. Data yang dikirim berupa suhu dan kelembapan.
+# 🌱 ESP32 LoRa Firebase Monitoring (TTGO T-Higrow)
+
+Proyek ini terdiri dari dua bagian utama:
+
+- **loRaTransmitter**: Mengambil data sensor suhu & kelembapan menggunakan DHT11, lalu mengirimkannya melalui LoRa.
+- **loRaReceiver**: Menerima data LoRa dan mengirimkannya ke **Firebase Realtime Database**.
+
+Keduanya berjalan di board **LILYGO TTGO T-Higrow** berbasis ESP32 dan LoRa SX1276/78.
+
+---
 
 ## 📂 Struktur Folder
-```LoRa/
-├── LoRaReceiver/
+
+```
+├── loRaReceiver/
 │   ├── loraReceiver.ino
-├── LoRaTransmitter/
+├── loRaTransmitter/
 │   └── loraTransmitter.ino
 │   .gitignore              ← Untuk mengabaikan loRaReceiver/secrets.h
 │   secrets.example.h       ← Contoh file credentials
 ```
-## 🛠️ Fitur
-- Menerima data via LoRa (modul LoRa internal TTGO T-Higrow)
-- Koneksi WiFi
-- Kirim data ke Firebase RTDB dalam bentuk JSON
-- Token otomatis via Firebase_ESP_Client
 
-## 🔧 Persiapan
-1. Clone repository
-2. Buat file secrets.h
-3. Buat file LoRaReceiver/secrets.h berdasarkan secrets.example.h:
+---
+## 🔧 loRaTransmitter
 
-```#ifndef SECRETS_H
+### Fungsi
+
+- Membaca suhu dan kelembapan dari sensor **DHT11**
+- Mengontrol 2 relay (lampu & kipas)
+- Mengirimkan data LoRa setiap 2 detik
+
+### 📡 Format Data LoRa
+```
+temp:25.3,hum:68.0
+```
+
+## 💡 Logika Relay
+- Relay 1 (GPIO 33): Lampu — aktif saat LOW
+- Relay 4 (GPIO 32): Kipas menyala jika suhu > 38°C
+
+## 🧪 Sensor & Pinout
+```
+| Komponen        | Pin ESP32 (TTGO) |
+| --------------- | ---------------- |
+| DHT11           | GPIO 15          |
+| Relay 1 (lampu) | GPIO 33          |
+| Relay 4 (kipas) | GPIO 32          |
+```
+
+## 🔌 LoRa SPI Pinout
+```
+| LoRa Pin | ESP32 GPIO |
+| -------- | ---------- |
+| SCK      | 5          |
+| MOSI     | 27         |
+| MISO     | 19         |
+| SS       | 18         |
+| RST      | 23         |
+| DIO0     | 26         |
+```
+
+## 🌐 LoRaReceiver + Firebase
+### Fungsi
+- Koneksi ke WiFi
+- Autentikasi dengan Firebase menggunakan API Key
+- Parsing data LoRa
+- Kirim data suhu & kelembapan ke Firebase Realtime Database sebagai JSON
+
+```
+{
+  "temperature": 25.3,
+  "humidity": 68.0
+}
+```
+
+## 🔐 File secrets.h
+Buat file secrets.h di LoRaReceiver/ berdasarkan contoh ini:
+
+```
+#ifndef SECRETS_H
 #define SECRETS_H
 
 #define WIFI_SSID "your_wifi_ssid"
 #define WIFI_PASSWORD "your_wifi_password"
 #define API_KEY "your_firebase_api_key"
-#define DATABASE_URL "your_firebase_database_url"
+#define DATABASE_URL "https://your-project-id.firebaseio.com/"
 
 #endif
 ```
 
-⚠️ Jangan upload secrets.h ke GitHub — file ini sudah masuk .gitignore.
-
-## 📦 Library yang Dibutuhkan
-Install melalui Library Manager di Arduino IDE:
+## 📥 Instalasi Library
+Install library berikut di Arduino IDE:
 - Firebase ESP Client
 - LoRa by Sandeep Mistry
+- DHT sensor library
 
-## 🖥️ Perangkat Keras
-- ESP32
-- LILYGO TTGO T-Higrow Lora Shield 
+## 📋 Cara Kerja Sistem
+1. LoRaTransmitter membaca data dari sensor dan mengirimkan string melalui LoRa.
+2. LoRaReceiver menerima string, parsing suhu & kelembapan.
+3. Data dikirim ke Firebase dalam bentuk JSON.
+4. Firebase bisa diakses untuk monitoring real-time melalui dashboard atau aplikasi.
 
-
-## ⚙️ Pinout LoRa (TTGO T-Higrow)
-LoRa        ESP32 (TTGO T-Higrow)
-SCK   →     GPIO5
-MISO  →     GPIO19
-MOSI  →     GPIO27
-SS    →     GPIO18
-RESET →     GPIO23
-DIO0  →     GPIO26
-📝 Pin ini sudah dikonfigurasi di sketch loraReceiver.ino.
-
-## 📡 Format Data LoRa
-Pastikan transmitter mengirim string dengan format seperti: temp:25.5,hum:70.2
-
-Receiver akan parsing dan menyimpan ke Firebase sebagai:
-
-```
-{
-  "temperature": 25.5,
-  "humidity": 70.2
-}
-```
-## ☁️ Konfigurasi Firebase
-Aktifkan Realtime Database di Firebase Console
-
-Atur rules sementara untuk pengujian:
-
+## 🛠️ Firebase Setup
+1. Buat project di Firebase Console
+2. Aktifkan Realtime Database
+3. Atur rules sementara untuk testing:
 ```
 {
   "rules": {
@@ -78,4 +112,4 @@ Atur rules sementara untuk pengujian:
   }
 }
 ```
-⚠️ Jangan gunakan aturan ini untuk produksi.
+⚠️ Gantilah rules ini sebelum digunakan di lingkungan produksi.
